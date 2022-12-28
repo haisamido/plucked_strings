@@ -4,12 +4,13 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-# objectives:
-#   code 
-#   https://drive.google.com/file/d/19aP8p5_P4ctM7Y8fg74ErdViTrfGOENZ/view?usp=share_link
+# Objectives:
+#   code:
+#     https://drive.google.com/file/d/19aP8p5_P4ctM7Y8fg74ErdViTrfGOENZ/view?usp=share_link
+#     Below equation numbers come from this link ^^^
 #
 
-# sources: 
+# Sources: 
 #   https://inside-guitar.com/the-ultimate-guide-to-classical-guitar-strings/
 #   https://euphonics.org/publication-list-jim-woodhouse/
 #   https://www.ingentaconnect.com/contentone/dav/aaua/2019/00000105/00000003/art00012
@@ -29,17 +30,22 @@ d = 1
 # Frequency (Hz)
 f = f1 = 110
 
-# Scale Length
-L = 1.0
+# Scale Length (m)
+L = 0.65
 
 # Young'e Modulus
+# TODO: need to figure out
 E = 1.0
 
 # Harmonic number
 n = 1
 
 def m(d,ρ,L):
-    return 1
+    # Calculate mass per scale length of string
+    #   ρ in kg/m**3
+    #   d in m
+    #   L in m
+    return ρ * (pi*(d**2)/4) * L
 
 def α(f,L):
      # Equation 18: α = Lf on page 521, Wave speed in string
@@ -58,7 +64,7 @@ def σ(ρ,α):
     return 4 * ρ * (α**2)
 
 def T(ρ,d):
-    # Tension
+    # String Tension
      return pi * ρ * d**2 * α
 
 def γ(T,L):
@@ -69,6 +75,7 @@ def Z0(d,ρ,α):
      # Equation 8: Z0 = πρd**2α/2, wave impedance
      return ( pi * (d**2) * ρ * α )/ 2
 
+m  = m(d/1000,ρ,L)
 α  = α(f,L)
 λ  = λ(E,d,n,ρ,L,f)
 σ  = σ(ρ,α)
@@ -77,9 +84,7 @@ T  = T(ρ,d)
 β  = β(d,L)
 Z0 = Z0(d,ρ,α)
 
-#print(E,α,λ,σ,T,γ,β,Z0)
-
-print(α,β,λ)
+print(m,E,α,λ,σ,T,γ,β,Z0)
 
 #α   = np.arange(0., 300., 10.)
 #d       = np.arange(0., 0.003, .0001)
