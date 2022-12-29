@@ -40,12 +40,49 @@ def area(d):
     # String cross-sectional area, m**2
     return π*(d**2)/4
 
-def m(d,rho,L):
-    # Calculate mass per scale length of string
+def mass(d,rho,L):
+    # Calculate string mass per scale length
     #   rho in kg/m**3
     #   d in m
     #   L in m
     return rho * (π*(d**2)/4) * L
+
+def mu(mass,L):
+    # Calculate μ = mass / L
+    # linear mass density
+    return mass/L
+
+#------------------------------------------------------------------------------
+# Tension calculations
+#------------------------------------------------------------------------------
+def tension_from_frequency_L(n,f,L,mu):
+    # Equation 1: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5459001/
+    return mu *((2 * f * L)/n)**2
+
+rho = 1070
+d = 0.0013
+n = 1
+f = 98
+L = 0.755
+
+mass = mass(d,rho,L)
+mu   = mu(mass,L)
+
+T0 = tension_from_frequency_L(n,f,L,mu)
+
+print(mass,mu,T0)
+
+def tension_from_velocity(mu,v):
+    return mu*v**2
+#------------------------------------------------------------------------------
+
+def velocity_from_tension(T,mu):
+    # Wave speed from string tension and mu = mass/L
+    # Units: m/s
+    return math.sqrt(T/mu)
+
+def mu_from_tension(n,f,L,T):
+    return T/(2*f*L/n)**2
 
 def alpha(f,L):
     # Equation 18: α = Lf on page 521
@@ -95,7 +132,7 @@ def Z0(d,rho,alpha):
      # Equation 8: Z0 = π rho d**2alpha/2, wave impedance, page 517
      return ( π * (d**2) * rho * alpha )/ 2
 
-m     = m(d/1000,rho,L)
+m     = mass(d/1000,rho,L)
 alpha = alpha(f,L)
 T     = T(rho,d,alpha)
 gama  = gama(T,L)
