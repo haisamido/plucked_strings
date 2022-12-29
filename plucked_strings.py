@@ -24,7 +24,7 @@ import numpy as np
 # String density (kg/m**3)
 rho  = 1070 # nylon
 
-# String diameter (mm)
+# String diameter (m)
 d = 0.001
 
 # Frequency (Hz)
@@ -36,6 +36,10 @@ L = 0.65
 # Harmonic number
 n = 1
 
+def area(d):
+    # String cross-sectional area, m**2
+    return π*(d**2)/4
+
 def m(d,rho,L):
     # Calculate mass per scale length of string
     #   rho in kg/m**3
@@ -44,12 +48,13 @@ def m(d,rho,L):
     return rho * (π*(d**2)/4) * L
 
 def alpha(f,L):
-     # Equation 18: α = Lf on page 521, Wave speed in string
-     # Units: m/s
-     return f*L
+    # Equation 18: α = Lf on page 521
+    # Units: m/s**2
+    return f*L
 
 def β(d,L):
     # Equation 18: β = d/L on page 521
+    # Units: none
     return d/L
 
 def sigma(rho,alpha):
@@ -57,10 +62,12 @@ def sigma(rho,alpha):
     # Units: N/m**2 or pascal (Pa)
     return 4 * rho * (alpha**2)
 
+#  σ = F/A
+
 def E(sigma):
     # Equation 16: Young'e Modulous, page 519
-    # Units: sigma is in GPa
-    # Ep ≈ 3.2 + 41sigma GPa, (fluorocarbon).
+    # Units: σ, sigma, is in GPa
+    # Ep ≈ 3.2 + 41σ GPa, (fluorocarbon).
     return 4.5 + 39 * sigma + 0.25
 
 def λ(E,d,n,rho,L,f):
@@ -74,7 +81,6 @@ def λ(E,d,n,rho,L,f):
     # of “warmth” versus “brightness”. The damping roll-off af-
     # fects the spectral centroid, and there is a well-established
     # correlation of perceived brightness with variation in spec-"
-
     return ( E * (π**2) * (d**2) * (n**2) ) / ( 64 * rho * (L**4) * (f**2) )
 
 def T(rho,d,alpha):
@@ -86,7 +92,7 @@ def gama(T,L):
     return 4 * T/L
 
 def Z0(d,rho,alpha):
-     # Equation 8: Z0 = πrhod**2alpha/2, wave impedance
+     # Equation 8: Z0 = π rho d**2alpha/2, wave impedance, page 517
      return ( π * (d**2) * rho * alpha )/ 2
 
 m     = m(d/1000,rho,L)
@@ -99,15 +105,17 @@ Z0    = Z0(d,rho,alpha)
 sigma     = sigma(rho,alpha)
 sigma_GPa = sigma/1000000000
 
+print("d =",d, "\narea=",area(d)," \nT/A =",T/area(d))
+
 E     = E(sigma_GPa)
 
 λ  = λ(E,d,n,rho,L,f)
 
-print("σ =", sigma_GPa, " (GPa)", "\nE =", E," (GPa)")
+print("\nσ =", sigma_GPa, " (GPa)", "\nE =", E," (GPa)")
 
 print("\nα =",alpha,"\nβ =",β,"\nλ =",λ)
 
-print("rho =",rho,"d =",d)
+print("rho =",rho,"\nd =",d)
 print("T =", T)
 #alpha   = np.arange(0., 300., 10.)
 #d       = np.arange(0., 0.003, .0001)
