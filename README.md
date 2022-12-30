@@ -23,5 +23,6 @@ v &=\sqrt{\frac{T}{\mu}} && \textrm{velocity (meters/sec)}\\ \\
 f_{n} &=\frac{n}{2L} v && \textrm{frequency (Hz)}\\ \\
 f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}} && \textrm{frequency (Hz)}\\ \\
 \lambda &= \frac {v}{f_n} && \textrm{wavelength (meters)}\\ \\
+\sigma & = \frac {T}{A} && \textrm{stress (Pascals)}
 \end{align}
 $$

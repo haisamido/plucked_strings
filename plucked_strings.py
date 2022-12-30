@@ -55,31 +55,29 @@ def mu(mass,L):
 #------------------------------------------------------------------------------
 # Tension calculations
 #------------------------------------------------------------------------------
-def tension_from_frequency_L(n,f,L,mu):
+def tension_from_flmun(f,L,mu,n):
     # Equation 1: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5459001/
     return mu *((2 * f * L)/n)**2
 
-rho = 1800
-d = 0.00088
-n = 1
-f = 261.6
-L = 0.550
-
-mass = mass(d,rho,L)
-mu   = mu(mass,L)
-
-T0 = tension_from_frequency_L(n,f,L,mu)
-
-print(mass,mu,T0)
-
 def tension_from_velocity(mu,v):
     return mu*v**2
+
+def T(rho,d,alpha):
+    # String Tension
+    return π * rho * alpha * d**2
 #------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Velocity calculations
+#------------------------------------------------------------------------------
+def velocity_from_fln(f,L,n):
+    return 2*f*L*n
 
 def velocity_from_tension(T,mu):
     # Wave speed from string tension and mu = mass/L
     # Units: m/s
     return math.sqrt(T/mu)
+#------------------------------------------------------------------------------
 
 def mu_from_tension(n,f,L,T):
     return T/(2*f*L/n)**2
@@ -94,18 +92,29 @@ def β(d,L):
     # Units: none
     return d/L
 
-def sigma(rho,alpha):
+#------------------------------------------------------------------------------
+# # Stress
+#------------------------------------------------------------------------------
+def sigma_from_flrn(f,L,rho,n):
     # Equation 19: String Stress
+    # alpha = f * L
     # Units: N/m**2 or pascal (Pa)
-    return 4 * rho * (alpha**2)
+    return 4 * rho * ((f*L)**2)/n
 
-#  σ = F/A
+def sigma_from_ta(T,A):
+    # Sigma derived from Tension and Area
+    return T/A
+#------------------------------------------------------------------------------
 
+#------------------------------------------------------------------------------
+# Young's Modulous
+#------------------------------------------------------------------------------
 def E(sigma):
     # Equation 16: Young'e Modulous, page 519
     # Units: σ, sigma, is in GPa
     # Ep ≈ 3.2 + 41σ GPa, (fluorocarbon).
     return 4.5 + 39 * sigma + 0.25
+#------------------------------------------------------------------------------
 
 def λ(E,d,n,rho,L,f):
     # Equation 7: governs the degree of inharmonicity
@@ -120,10 +129,6 @@ def λ(E,d,n,rho,L,f):
     # correlation of perceived brightness with variation in spec-"
     return ( E * (π**2) * (d**2) * (n**2) ) / ( 64 * rho * (L**4) * (f**2) )
 
-def T(rho,d,alpha):
-    # String Tension
-    return π * rho * d**2 * alpha
-
 def gama(T,L):
     # Equation 10: the "feel", gama = Fp/δ ≈ 4T/L
     return 4 * T/L
@@ -132,17 +137,34 @@ def Z0(d,rho,alpha):
      # Equation 8: Z0 = π rho d**2alpha/2, wave impedance, page 517
      return ( π * (d**2) * rho * alpha )/ 2
 
-#m     = mass(d/1000,rho,L)
+rho = 1800
+d = 0.00088
+n = 1
+f = 261.6
+L = 0.550
+A = area(d)
+mass = mass(d,rho,L)
+mu   = mu(mass,L)
+
+Tf     = tension_from_flmun(f,L,mu,n)
+stress = sigma_from_ta(Tf,A)
+vt     = velocity_from_tension(Tf,mu)
+vf     = velocity_from_fln(f,L,n)
+
+Tv     = tension_from_velocity(mu,vt)
+
+print(mass,mu,Tf,f*L, stress,vt,vf, Tv)
+
 alpha = alpha(f,L)
 T     = T(rho,d,alpha)
 gama  = gama(T,L)
 β     = β(d,L)
 Z0    = Z0(d,rho,alpha)
 
-sigma     = sigma(rho,alpha)
+sigma     = sigma_from_flrn(f,L,rho,n)
 sigma_GPa = sigma/1000000000
 
-print("d =",d, "\narea=",area(d)," \nT/A =",T/area(d))
+#print("d =",d, "\narea=",A," \nT/A =",T/A)
 
 E     = E(sigma_GPa)
 
