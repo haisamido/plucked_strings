@@ -2,7 +2,7 @@
 
 Derivation of string vibration equations can be found here https://en.wikipedia.org/wiki/String_vibration#Derivation 
 
-The following are the definition for each string:
+The following are to be defined for each string:
 $$
 \begin{align*}
 d & \equiv \textrm{diameter (meters)} \\
@@ -12,7 +12,7 @@ n & \equiv \textrm{nth harmonic}
 \end{align*}
 $$
 
-The following are equations to use for each string:
+The following equations are to be used for each string:
 $$
 \begin{align}
 A &=\pi\frac{d^2}{4} && \textrm{area (meters)}^2\\ \\
