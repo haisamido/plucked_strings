@@ -18,29 +18,13 @@ import numpy as np
 #   https://drive.google.com/file/d/19aP8p5_P4ctM7Y8fg74ErdViTrfGOENZ/view?usp=share_link
 #   https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5459001/
 #   https://publicwebuploads.uwec.edu/documents/Musical-string-inharmonicity-Chris-Murray.pdf
-
 π = pi =math.pi
-
-# String density (kg/m**3)
-rho  = 1070 # nylon
-
-# String diameter (m)
-d = 0.001
-
-# Frequency (Hz)
-f = f1 = 327.5
-
-# Scale Length (m)
-L = 0.65
-
-# Harmonic number
-n = 1
 
 def area(d):
     # String cross-sectional area, m**2
     return π*(d**2)/4
 
-def mass(d,rho,L):
+def mass(d,L,rho):
     # Calculate string mass per scale length
     #   rho in kg/m**3
     #   d in m
@@ -55,32 +39,45 @@ def mu(mass,L):
 #------------------------------------------------------------------------------
 # Tension calculations
 #------------------------------------------------------------------------------
-def tension_from_flmun(f,L,mu,n):
+def tension_from_flmu(f,L,mu,n):
     # Equation 1: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5459001/
     return mu *((2 * f * L)/n)**2
 
-def tension_from_vum(v,mu):
-    # Tension from μ == mu and wave velocity 
-    return mu*v**2
+def tension_from_fldr(f,L,d,rho):
+    # Tension from frequency, length, diameter, and density
+    # Page 522
+    return π * rho * d**2 * (f*L)**2
 
-def T(rho,d,alpha):
-    # String Tension
-    return π * rho * alpha * d**2
+def tension_from_ds(d,sigma):
+    # Tension from diameter (m), and stress (Pa)
+    # Page 522
+    return π * d**2 * sigma/4
+
+def tension_from_vmu(v,mu):
+    # Tension from wave velocity, and μ == mu
+    return mu*v**2
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
 # Velocity calculations
 #------------------------------------------------------------------------------
-def velocity_from_fln(f,L,n):
+def velocity_from_fl(f,L,n):
+    # Return wave velocity when frequency and length are known
+    #   f == Hz
+    #   L == m
+    #   n == nth harmonic
+    #   v == m/s
     return 2*f*L*n
 
 def velocity_from_tmu(T,mu):
-    # Wave speed from string tension and mu = mass/L
-    # Units: m/s
+    # Return wave velocity when tension and μ (mu) are provided
+    #   T == N
+    #   μ == mu == kg unit lengthe
+    #   v == m/s
     return math.sqrt(T/mu)
 #------------------------------------------------------------------------------
 
-def mu_from_tension(n,f,L,T):
+def mu_from_tension(f,L,T,n):
     return T/(2*f*L/n)**2
 
 def alpha(f,L):
@@ -144,19 +141,19 @@ f = 261.6
 L = 0.550
 A = area(d)
 
-mass = mass(d,rho,L)
+mass = mass(d,L,rho)
 mu   = mu(mass,L)
 
-Tf     = tension_from_flmun(f,L,mu,n)
+Tf     = tension_from_flmu(f,L,mu,n)
 stress = sigma_from_ta(Tf,A)
 vt     = velocity_from_tmu(Tf,mu)
-vf     = velocity_from_fln(f,L,n)
-Tv     = tension_from_vum(vt,mu)
+vf     = velocity_from_fl(f,L,n)
+Tv     = tension_from_vmu(vt,mu)
 
 print(mass,mu,Tf,f*L, stress,vt,vf, Tv)
 
 alpha = alpha(f,L)
-T     = T(rho,d,alpha)
+T= tension_from_fldr(f,L,d,rho)
 gama  = gama(T,L)
 β     = β(d,L)
 Z0    = Z0(d,rho,alpha)

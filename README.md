@@ -5,9 +5,9 @@ Derivation of string vibration equations can be found here https://en.wikipedia.
 The following are to be defined for each string:
 $$
 \begin{align*}
-d & \equiv \textrm{diameter (meters)} \\
-L & \equiv \textrm{scale length (meters)} \\
-\rho & \equiv \textrm{density } (kg/meters^3) \\
+d & \equiv \textrm{diameter (m)} \\
+L & \equiv \textrm{vibrating length (m)} \\
+\rho & \equiv \textrm{density } (kg/m^3) \\
 n & \equiv \textrm{nth harmonic}
 \end{align*}
 $$
@@ -15,14 +15,14 @@ $$
 The following equations are to be used for each string:
 $$
 \begin{align}
-A &=\pi\frac{d^2}{4} && \textrm{area (meters)}^2\\ \\
-V &= A \cdot L && \textrm{volume (meters)}^3\\ \\
+A &=\pi\frac{d^2}{4} && \textrm{area (m)}^2\\ \\
+V &= A \cdot L && \textrm{volume (m)}^3\\ \\
 m &=\rho\cdot{V} = \rho \cdot ( A \cdot L ) && \textrm{mass (kg)}\\ \\
-\mu &= \frac{m}{L} = \rho \cdot A && \textrm{mass per length (kg/meter)} \\ \\
-v &=\sqrt{\frac{T}{\mu}} && \textrm{velocity (meters/sec)}\\ \\
-f_{n} &=\frac{n}{2L} v && \textrm{frequency (Hz)}\\ \\
-f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}} && \textrm{frequency (Hz)}\\ \\
-\lambda &= \frac {v}{f_n} && \textrm{wavelength (meters)}\\ \\
+\mu &= \frac{m}{L} = \rho \cdot A && \textrm{mass per length, linear-density (kg/m)} \\ \\
+v &=\sqrt{\frac{T}{\mu}} && \textrm{wave velocity (m/s)}\\ \\
+f_{n} &=\frac{n}{2L} v && \textrm{frequency of the nth harmonic (Hz)}\\ \\
+f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}} && \textrm{frequency of the nth harmonic (Hz)}\\ \\
+{\lambda}_n &= \frac {v}{f_n} && \textrm{wavelength (m)}\\ \\
 \sigma & = \frac {T}{A} && \textrm{stress (Pascals)}
 \end{align}
 $$
