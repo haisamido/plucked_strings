@@ -59,7 +59,8 @@ def tension_from_flmun(f,L,mu,n):
     # Equation 1: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5459001/
     return mu *((2 * f * L)/n)**2
 
-def tension_from_velocity(mu,v):
+def tension_from_vum(v,mu):
+    # Tension from μ == mu and wave velocity 
     return mu*v**2
 
 def T(rho,d,alpha):
@@ -73,7 +74,7 @@ def T(rho,d,alpha):
 def velocity_from_fln(f,L,n):
     return 2*f*L*n
 
-def velocity_from_tension(T,mu):
+def velocity_from_tmu(T,mu):
     # Wave speed from string tension and mu = mass/L
     # Units: m/s
     return math.sqrt(T/mu)
@@ -93,11 +94,10 @@ def β(d,L):
     return d/L
 
 #------------------------------------------------------------------------------
-# # Stress
+# σ stress
 #------------------------------------------------------------------------------
 def sigma_from_flrn(f,L,rho,n):
     # Equation 19: String Stress
-    # alpha = f * L
     # Units: N/m**2 or pascal (Pa)
     return 4 * rho * ((f*L)**2)/n
 
@@ -143,15 +143,15 @@ n = 1
 f = 261.6
 L = 0.550
 A = area(d)
+
 mass = mass(d,rho,L)
 mu   = mu(mass,L)
 
 Tf     = tension_from_flmun(f,L,mu,n)
 stress = sigma_from_ta(Tf,A)
-vt     = velocity_from_tension(Tf,mu)
+vt     = velocity_from_tmu(Tf,mu)
 vf     = velocity_from_fln(f,L,n)
-
-Tv     = tension_from_velocity(mu,vt)
+Tv     = tension_from_vum(vt,mu)
 
 print(mass,mu,Tf,f*L, stress,vt,vf, Tv)
 
