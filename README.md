@@ -23,6 +23,18 @@ v &=\sqrt{\frac{T}{\mu}} && \textrm{wave velocity (m/s)}\\ \\
 f_{n} &=\frac{n}{2L} v && \textrm{frequency of the nth harmonic (Hz)}\\ \\
 f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}} && \textrm{frequency of the nth harmonic (Hz)}\\ \\
 {\lambda}_n &= \frac {v}{f_n} && \textrm{wavelength (m)}\\ \\
-\sigma & = \frac {T}{A} && \textrm{stress (Pascals)}
+\sigma & = \frac {T}{A} && \textrm{stress (Pa)}
+\end{align}
+$$
+
+$$
+\begin{align}
+f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}}\\ \\
+\therefore \mu &= T ( \frac{n}{2f_{n}L} )^2 = \rho \cdot (area) = \rho \pi \cdot (\frac{d^2}{4}) \\ \\
+\textrm{now solve for d:} \\
+
+d &= (\frac{n}{(f_{n}L)})\cdot \sqrt( \frac{T}{\rho \pi} ) \\
+\therefore \\
+d &= f(f_{n},L,T,\rho,n)
 \end{align}
 $$

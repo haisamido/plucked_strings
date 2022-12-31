@@ -31,6 +31,16 @@ def mass(d,L,rho):
     #   L in m
     return rho * (π*(d**2)/4) * L
 
+def diameter_from_fltr(f,L,T,rho,n):
+    # Return diameter if f, L, T, rho, and n are known
+    return (n/(f*L))*math.sqrt(T/(rho*pi))
+
+# https://courses.physics.illinois.edu/phys406/sp2017/Lecture_Notes/Waves/PDF_FIles/Waves_2.pdf
+def diameter_from_Z0():
+    # Z0 = πρd2α/2
+
+    return 1
+
 def mu(mass,L):
     # Calculate μ = mass / L
     # linear mass density
@@ -93,7 +103,7 @@ def β(d,L):
 #------------------------------------------------------------------------------
 # σ stress
 #------------------------------------------------------------------------------
-def sigma_from_flrn(f,L,rho,n):
+def sigma_from_flr(f,L,rho,n):
     # Equation 19: String Stress
     # Units: N/m**2 or pascal (Pa)
     return 4 * rho * ((f*L)**2)/n
@@ -130,9 +140,40 @@ def gama(T,L):
     # Equation 10: the "feel", gama = Fp/δ ≈ 4T/L
     return 4 * T/L
 
-def Z0(d,rho,alpha):
+def Z0(f,L,d,rho):
      # Equation 8: Z0 = π rho d**2alpha/2, wave impedance, page 517
-     return ( π * (d**2) * rho * alpha )/ 2
+     # "If one wished to select a set of strings with constant impedance, 
+     # in the interests of equal loud-ness, these lines indicate the 
+     # trend that should be followed." page 522
+     return ( π * (d**2) * rho * f * L )/ 2
+
+#
+# Pitches
+#
+def frequency(f0,a,n):
+    # https://pages.mtu.edu/~suits/NoteFreqCalcs.html
+    # https://pages.mtu.edu/~suits/notefreqs.html
+    # n = the number of half intervals away from the fixed note you are
+    f = f0 * (a)**n
+    return f
+
+def nth_root_of_2(n):
+    return (2)**(1/n)
+
+# Below semi-tone intervals would only work with a starting point of pitch G2
+intervals = np.array([ 0, 2, 4, 5, 7, 9,10])
+intervals = np.append(intervals, [12,14,16,17,19,21,22])
+intervals = np.append(intervals, [24,26,28,29,31,33,34])
+intervals = np.append(intervals, [36,38,40,41,43])
+
+a  = nth_root_of_2(12)
+f0 = 98
+
+frequencies = frequency(f0,a,intervals)
+
+#print(frequencies)
+#print(np.transpose(intervals))
+#print(frequency(f0,a,intervals))
 
 rho = 1800
 d = 0.00088
@@ -150,34 +191,56 @@ vt     = velocity_from_tmu(Tf,mu)
 vf     = velocity_from_fl(f,L,n)
 Tv     = tension_from_vmu(vt,mu)
 
-print(mass,mu,Tf,f*L, stress,vt,vf, Tv)
+#print("XXXXXX",diameter_from_fltr(f,L,Tf,rho,n))
+
+#print(mass,mu,Tf,f*L, stress,vt,vf, Tv)
 
 alpha = alpha(f,L)
 T= tension_from_fldr(f,L,d,rho)
 gama  = gama(T,L)
 β     = β(d,L)
-Z0    = Z0(d,rho,alpha)
 
-sigma     = sigma_from_flrn(f,L,rho,n)
+sigma     = sigma_from_flr(f,L,rho,n)
 sigma_GPa = sigma/1000000000
 
-#print("d =",d, "\narea=",A," \nT/A =",T/A)
-
-E     = E(sigma_GPa)
-
+E  = E(sigma_GPa)
 λ  = λ(E,d,n,rho,L,f)
 
-print("\nσ =", sigma_GPa, " (GPa)", "\nE =", E," (GPa)")
+y0 = 0.755
+yf = 0.165
 
-print("\nα =",alpha,"\nβ =",β,"\nλ =",λ)
+x0 = 0.000
+xf = 0.393
 
-print("rho =",rho,"\nd =",d)
-print("T =", T)
+dx = xf/25
+
+f0=98
+x  = np.arange(0., xf, dx)
+x  = np.append(x, xf)
+
+y = ((yf-y0)/xf) * x + y0
+Ls = y
+
+# Desired tension for all strings
+T0 = 100
+
+diameters = diameter_from_fltr(frequencies,Ls,T0,rho,n)
+Z0s       = Z0(frequencies,Ls,diameters,rho)
+
+print("frequencies = \n",frequencies)
+print("Ls = \n", Ls)
+print("diameters = \n",1000*diameters)
+print("wave impedance =\n", Z0s)
+#print(frequencies, Ls, 1000*diameters,Z0s)
+
+#print(diameter_from_fltr(98,.755,T0,rho,n))
+
+#print(x,y)
 #alpha   = np.arange(0., 300., 10.)
 #d       = np.arange(0., 0.003, .0001)
 #T       = π * rho * d**2 * alpha**2
 #Z0      = ( π * (d**2) * rho * alpha )/ 2
 
 #print(alpha,T,d)
-#plt.plot( alpha, T)
+#plt.plot( frequencies, Z0s)
 #plt.show()
