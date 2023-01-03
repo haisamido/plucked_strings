@@ -2,36 +2,43 @@
 
 Derivation of string vibration equations can be found here https://en.wikipedia.org/wiki/String_vibration#Derivation 
 
-The following are to be defined for each string:
+Definitions for the <u>vibrating</u> portion of <u>each</u> string:
 $$
 \begin{align*}
-d & \equiv \textrm{diameter (m)} \\
-L & \equiv \textrm{vibrating length (m)} \\
+d & \equiv \textrm{diameter } (m) \\
+L & \equiv \textrm{vibrating length, scale length } (m) \\
 \rho & \equiv \textrm{density } (kg/m^3) \\
-n & \equiv \textrm{nth harmonic}
+n & \equiv \textrm{nth harmonic} \\ \\
+f_{n} & \equiv \textrm{frequency of the nth harmonic } (Hz) \\
+\rho & \equiv \textrm{density } (kg/m^3) \\
+\mu & \equiv \textrm{mass per length, linear-density } (kg/m) \\
+T & \equiv \textrm{tension } (Newtons)
 \end{align*}
 $$
 
-The following equations are to be used for each string:
+
+The following equations are for the <u>vibrating</u> portion of <u>each</u> string:
 $$
 \begin{align}
-A &=\pi\frac{d^2}{4} && \textrm{area (m)}^2\\ \\
-V &= A \cdot L && \textrm{volume (m)}^3\\ \\
-m &=\rho\cdot{V} = \rho \cdot ( A \cdot L ) && \textrm{mass (kg)}\\ \\
-\mu &= \frac{m}{L} = \rho \cdot A && \textrm{mass per length, linear-density (kg/m)} \\ \\
-v &=\sqrt{\frac{T}{\mu}} && \textrm{wave velocity (m/s)}\\ \\
-f_{n} &=\frac{n}{2L} v && \textrm{frequency of the nth harmonic (Hz)}\\ \\
-f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}} && \textrm{frequency of the nth harmonic (Hz)}\\ \\
-{\lambda}_n &= \frac {v}{f_n} && \textrm{wavelength (m)}\\ \\
-\sigma & = \frac {T}{A} && \textrm{stress (Pa)}\\
+A &=\pi\frac{d^2}{4} & \textrm{area (m)}^2\\
+V &= A \cdot L & \textrm{volume (m)}^3\\
+m &=\rho\cdot{V} = \rho \cdot ( A \cdot L ) & \textrm{mass (kg)}\\
+\mu &= \frac{m}{L} = \rho \cdot A = \rho \cdot \pi\frac{d^2}{4} & \textrm{mass per length, linear-density (kg/m)} \\
+v &=\sqrt{\frac{T}{\mu}} & \textrm{wave velocity (m/s)}\\
+f_{n} &=\frac{n}{2L} v & \textrm{frequency of the nth harmonic (Hz)}\\
+f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}} & \textrm{frequency of the nth harmonic (Hz)}\\
+{\lambda}_n &= \frac {v}{f_n} & \textrm{wavelength (m)}\\
+\sigma & = \frac {T}{A} & \textrm{stress (Pa)}\\
 
+T &= 4 \cdot \left(\frac{f_{n} \cdot L}{n}\right)^2 \cdot \mu \\
 f_{n} &=\frac{n}{2L} \sqrt{\frac{T}{\mu}}\\ \\
-\therefore \mu &= T ( \frac{n}{2f_{n}L} )^2 = \rho \cdot (area) = \rho \pi \cdot (\frac{d^2}{4}) \\ \\
+\therefore \mu &= T ( \frac{n}{2f_{n}L} )^2 = \rho \cdot (area) = \rho \pi \cdot (\frac{d^2}{4}) \\
 \textrm{now solve for diameter, d:} \\
 
 d &= (\frac{n}{(f_{n}L)})\cdot \sqrt( \frac{T}{\rho \pi} ) \\
 \therefore \\
 d &= f(f_{n},L,T,\rho,n) \\
+Z_{0} & = \frac{\pi \rho d^2 f_{n} L}{2} & \textrm{wave impedance}
 \end{align}
 $$
 
