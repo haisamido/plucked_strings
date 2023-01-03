@@ -227,6 +227,24 @@ T0 = 100
 diameters = diameter_from_fltr(frequencies,Ls,T0,rho,n)
 Z0s       = Z0(frequencies,Ls,diameters,rho)
 
+def generate_courese_strings(frequencies,diameters):
+    course=1
+    # Below semi-tone intervals would only work with a starting point of pitch G2
+    intervals = np.array([ 0, 2, 4, 5, 7, 9,10])
+    intervals = np.append(intervals, [12,14,16,17,19,21,22])
+    intervals = np.append(intervals, [24,26,28,29,31,33,34])
+    intervals = np.append(intervals, [36,38,40,41,43])
+
+    a  = nth_root_of_2(12)
+    f0 = 98
+
+    frequencies = frequency(f0,a,intervals)
+    for freq in frequencies:
+        for string in range(1,4):
+            print("%s,%s,%d,%d,%7.3f,%6.4f,%5.3f,%6.2f,%s" %("qanun","turkish",course,string,freq,0.800,1000*diameters[course-1],1800,"flurocarbon nylon"))
+        course += 1
+
+
 print("frequencies = \n",frequencies)
 print("Ls = \n", Ls)
 print("diameters = \n",1000*diameters)
